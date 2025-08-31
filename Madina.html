@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Madina Store | حبارات و برنترات</title>
+  <meta name="description" content="Madina Store - بيع الحبارات، البرنترات وقطع الغيار بجودة عالية وأسعار تنافسية مع شحن لجميع المحافظات." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0a0a0a;
+      --card:#121212;
+      --text:#ffffff;
+      --muted:#c7c7c7;
+      --gold:#d4af37;
+      --gold-2:#f2d984;
+      --accent:#1f1f1f;
+      --radius:20px;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Cairo', system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 800px at 80% -10%, rgba(212,175,55,.12), transparent 60%),
+                  radial-gradient(800px 600px at 0% 100%, rgba(242,217,132,.08), transparent 60%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.7;
+    }
+
+    /* Header */
+    .navbar{
+      position:sticky; top:0; z-index:60;
+      backdrop-filter:saturate(1.2) blur(10px);
+      background:linear-gradient(180deg, rgba(10,10,10,.95), rgba(10,10,10,.75));
+      border-bottom:1px solid rgba(212,175,55,.18);
+    }
+    .container{max-width:1200px; margin:auto; padding-inline:18px}
+    .nav-inner{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 0}
+    .brand{display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text)}
+    .logo{width:160px; height:75px; display:flex; align-items:center; gap:12px}
+    .logo img{height:100%; width:auto; object-fit:contain; border-radius:8px; background:transparent}
+    .brand h1{font-size:1.25rem; margin:0; letter-spacing:.5px}
+    .brand small{display:block; color:var(--muted); font-weight:500; margin-top:-2px}
+
+    .nav-links{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .nav-link{padding:8px 12px; border-radius:999px; border:1px solid rgba(212,175,55,.12); color:var(--text); text-decoration:none; font-weight:700; font-size:.95rem}
+    .nav-link:hover{background:rgba(212,175,55,.08); color:var(--gold)}
+
+    /* Cart icon */
+    .cart-btn {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background:transparent;
+      border:1px solid rgba(212,175,55,.08);
+      padding:8px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      color:var(--muted);
+      font-weight:800;
+    }
+    .cart-count {
+      background:var(--gold);
+      color:#000;
+      padding:4px 8px;
+      border-radius:999px;
+      font-weight:900;
+    }
+
+    /* Hero */
+    .hero{position:relative; overflow:hidden}
+    .hero-inner{display:grid; grid-template-columns:1.2fr .8fr; gap:28px; align-items:center; padding:42px 0}
+    .badge{display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border:1px solid rgba(212,175,55,.35); color:var(--gold); border-radius:999px; background:rgba(212,175,55,.08); font-weight:800}
+    .title{font-size:clamp(28px, 3.2vw, 46px); margin:14px 0 8px; font-weight:900}
+    .subtitle{color:var(--muted); margin:0 0 20px; font-size:1.05rem}
+
+    .cta{display:flex; gap:12px; flex-wrap:wrap}
+    .btn{display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:12px 18px; border-radius:14px; font-weight:800; text-decoration:none; transition:.2s ease}
+    .btn-gold{background:linear-gradient(135deg, var(--gold), var(--gold-2)); color:#000}
+    .btn-gold:hover{filter:brightness(1.05)}
+    .btn-outline{border:1px solid rgba(212,175,55,.12); color:var(--text); background:transparent}
+    .btn-outline:hover{background:rgba(212,175,55,.06)}
+
+    .hero-card{background:linear-gradient(180deg, rgba(212,175,55,.08), rgba(255,255,255,.02)); border:1px solid rgba(212,175,55,.12); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow)}
+    .hero-card img{width:100%; border-radius:14px}
+
+    /* Sections */
+    section{padding:38px 0}
+    .section-head{display:flex; align-items:end; justify-content:space-between; gap:16px; margin-bottom:18px}
+    .section-head h2{margin:0; font-size:1.4rem}
+    .tabs{display:flex; gap:8px; flex-wrap:wrap}
+    .tab{padding:8px 12px; border-radius:999px; background:var(--accent); border:1px solid rgba(212,175,55,.12); color:var(--text); cursor:pointer; font-weight:700}
+    .tab.active{background:linear-gradient(135deg, rgba(212,175,55,.12), rgba(212,175,55,.04)); color:var(--gold);}
+
+    /* Products Grid */
+    .grid{display:grid; grid-template-columns:repeat(4, 1fr); gap:16px}
+    @media (max-width:1100px){ .grid{grid-template-columns:repeat(3, 1fr);} }
+    @media (max-width:780px){ .hero-inner{grid-template-columns:1fr} .grid{grid-template-columns:repeat(2, 1fr);} }
+    @media (max-width:500px){ .grid{grid-template-columns:1fr;} }
+
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.005)); border:1px solid rgba(212,175,55,.08); border-radius:16px; overflow:hidden; box-shadow:var(--shadow); display:flex; flex-direction:column}
+    .thumb{position:relative; aspect-ratio:4/3; overflow:hidden; background:#0f0f0f}
+    .thumb img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s ease}
+    .card:hover .thumb img{transform:scale(1.04)}
+    .badge-cat{position:absolute; top:10px; right:10px; background:rgba(0,0,0,.6); color:var(--gold); border:1px solid rgba(212,175,55,.5); padding:6px 10px; border-radius:999px; font-weight:800; font-size:.8rem}
+    .content{padding:14px}
+    .name{margin:0 0 6px; font-weight:800; font-size:1.05rem}
+    .desc{margin:0 0 10px; color:var(--muted); font-size:.95rem}
+    .price{margin:0 0 12px; font-weight:900; color:var(--gold); font-size:1.05rem}
+    .actions{margin-top:auto; display:flex; gap:10px}
+    .actions .btn{flex:1}
+
+    /* Info blocks */
+    .features{display:grid; grid-template-columns:repeat(3, 1fr); gap:14px}
+    .feature{background:linear-gradient(180deg, rgba(212,175,55,.06), rgba(212,175,55,.03)); border:1px solid rgba(212,175,55,.12); border-radius:16px; padding:16px}
+    .feature h3{margin:0 0 4px; font-size:1.05rem}
+    .feature p{margin:0; color:var(--muted)}
+    @media (max-width:900px){ .features{grid-template-columns:1fr} }
+
+    /* Footer */
+    footer{margin-top:30px; padding:24px 0; border-top:1px solid rgba(212,175,55,.12); background:linear-gradient(180deg, rgba(10,10,10,.6), rgba(10,10,10,.92))}
+    .footer-grid{display:grid; grid-template-columns:2fr 1fr 1fr; gap:14px}
+    .footer-col h4{margin:0 0 10px}
+    .footer-col a{display:block; color:var(--muted); text-decoration:none; margin:4px 0}
+    .footer-col a:hover{color:var(--gold)}
+    @media (max-width:900px){ .footer-grid{grid-template-columns:1fr} }
+
+    .small{font-size:.92rem; color:var(--muted)}
+
+    /* Cart modal */
+    .cart-modal {
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(0,0,0,0.5);
+      z-index:120;
+    }
+    .cart-modal.open { display:flex; }
+    .cart-panel {
+      width:95%;
+      max-width:520px;
+      background:var(--card);
+      border-radius:12px;
+      padding:18px;
+      box-shadow:var(--shadow);
+      color:var(--text);
+    }
+    .cart-panel h3 { margin:0 0 12px; color:var(--gold) }
+    .cart-list { max-height:320px; overflow:auto; margin-bottom:12px; }
+    .cart-item { display:flex; gap:12px; align-items:center; padding:8px 0; border-bottom:1px solid rgba(255,255,255,.02) }
+    .cart-item img{width:56px;height:40px;object-fit:cover;border-radius:6px}
+    .cart-item .meta{flex:1}
+    .cart-item .meta b{display:block}
+    .cart-item .remove{background:transparent;border:1px solid rgba(255,255,255,.06);color:var(--muted);padding:6px 8px;border-radius:8px;cursor:pointer}
+    .cart-total{font-weight:900;color:var(--gold);margin-bottom:10px}
+    .cart-actions{display:flex;gap:10px}
+    .cart-actions .btn{flex:1}
+    @media(max-width:520px){ .cart-panel{padding:12px} .cart-item img{width:46px;height:36px} }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a class="brand" href="#home" aria-label="Madina Store Home">
+        <div class="logo">
+          <!-- ضع هنا ملف logo.png في نفس المجلد -->
+          <img src="c:\Users\user\Downloads\ChatGPT Image 29 أغسطس 2025، 03_35_28 م.png" alt="Madina Store Logo" onerror="this.style.display='none'">
+        </div>
+        <div>
+          <h1>Madina Store <small>حبارات • برنترات • قطع غيار</small></h1>
+        </div>
+      </a>
+
+      <div style="display:flex;gap:12px;align-items:center">
+        <nav class="nav-links" aria-label="روابط سريعة">
+          <a class="nav-link" href="#printers">البرنترات</a>
+          <a class="nav-link" href="#inks">الحبارات</a>
+          <a class="nav-link" href="#spare">قطع الغيار</a>
+          <a class="nav-link" href="#policy">الشحن والدفع</a>
+          <a class="nav-link" href="#about">من نحن</a>
+        </nav>
+
+        <button class="cart-btn" id="open-cart">
+          🛒 <span class="cart-count" id="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="home" class="hero">
+    <div class="container hero-inner">
+      <div>
+        <span class="badge">⚡ عروض الافتتاح — شحن مجاني للطلبات فوق 2000 ج.م</span>
+        <h2 class="title">متجر لبيع جميع انواع الحبارات والبرنترات — جودة عالية بأسعار تنافسية</h2>
+        <p class="subtitle">نوفر كل احتياجات الطباعة: أحبار أصلية ومٌعاد تعبئتها، برنترات منزلية ومكتبية، وقطع غيار مع دعم فني سريع. شحن لكل المحافظات.</p>
+        <div class="cta">
+          <a href="#products" class="btn btn-gold">تسوق المنتجات الآن</a>
+          <a href="#policy" class="btn btn-outline">اعرف سياسة الشحن والدفع</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <img src="https://images.unsplash.com/photo-1589793460747-79a501fe9784?q=80&w=1200&auto=format&fit=crop" alt="طابعة مكتبية حديثة" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Products Section with Tabs -->
+  <section id="products">
+    <div class="container">
+      <div class="section-head">
+        <h2>المنتجات</h2>
+        <div class="tabs" role="tablist" aria-label="تصنيفات المنتجات">
+          <button class="tab active" data-filter="all" role="tab">الكل</button>
+          <button class="tab" data-filter="printer" role="tab">البرنترات</button>
+          <button class="tab" data-filter="ink" role="tab">الحبارات</button>
+          <button class="tab" data-filter="spare" role="tab">قطع الغيار</button>
+        </div>
+      </div>
+
+      <!-- Printers -->
+      <h3 id="printers" class="small">البرنترات</h3>
+      <div class="grid" aria-label="قائمة البرنترات">
+        <!-- Card 1 -->
+        <article class="card" data-cat="printer" data-name="HP LaserJet Pro M404" data-price="6999" data-img="https://images.unsplash.com/photo-1589793460834-316f7a4a2381?q=80&w=1200&auto=format&fit=crop">
+          <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1589793460834-316f7a4a2381?q=80&w=1200&auto=format&fit=crop" alt="Printer HP LaserJet Pro" loading="lazy" />
+            <span class="badge-cat">ليزر</span>
+          </div>
+          <div class="content">
+            <h4 class="name">HP LaserJet Pro M404</h4>
+            <p class="desc">طابعة ليزر أحادية — سرعة عالية، مناسبة للمكاتب الصغيرة.</p>
+            <p class="price">6,999 ج.م</p>
+            <div class="actions">
+              <button class="btn btn-gold add-to-cart" data-name="HP LaserJet Pro M404" data-price="6999">أضف إلى السلة</button>
+              <a class="btn btn-outline" href="#policy">تفاصيل الشحن</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="card" data-cat="printer" data-name="Canon PIXMA G3411" data-price="5499" data-img="https://images.unsplash.com/photo-1541637433463-c4efb0d6c8f6?q=80&w=1200&auto=format&fit=crop">
+          <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1541637433463-c4efb0d6c8f6?q=80&w=1200&auto=format&fit=crop" alt="Canon Pixma Inkjet" loading="lazy" />
+            <span class="badge-cat">إنك جيت</span>
+          </div>
+          <div class="content">
+            <h4 class="name">Canon PIXMA G3411</h4>
+            <p class="desc">طابعة إنك تانك اقتصادية بطباعة ملونة بجودة ممتازة.</p>
+            <p class="price">5,499 ج.م</p>
+            <div class="actions">
+              <button class="btn btn-gold add-to-cart" data-name="Canon PIXMA G3411" data-price="5499">أضف إلى السلة</button>
+              <a class="btn btn-outline" href="#policy">تفاصيل الشحن</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="card" data-cat="printer" data-name="Epson EcoTank L3250" data-price="7900" data-img="https://images.unsplash.com/photo-1612831200873-3f5b70e4711f?q=80&w=1200&auto=format&fit=crop">
+          <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1612831200873-3f5b70e4711f?q=80&w=1200&auto=format&fit=crop" alt="Epson EcoTank" loading="lazy" />
+            <span class="badge-cat">EcoTank</span>
+          </div>
+          <div class="content">
+            <h4 class="name">Epson EcoTank L3250</h4>
+            <p class="desc">حجم طباعة عالي بتكلفة منخفضة جدًا للحبر.</p>
+            <p class="price">7,900 ج.م</p>
+            <div class="actions">
+              <button class="btn btn-gold add-to-cart" data-name="Epson EcoTank L3250" data-price="7900">أضف إلى السلة</button>
+              <a class="btn btn-outline" href="#policy">تفاصيل الشحن</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="card" data-cat="printer" data-name="Brother HL-L2350DW" data-price="6350" data-img="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop">
+          <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop" alt="Brother Laser" loading="lazy" />
+            <span class="badge-cat">ليزر</span>
+          </div>
+          <div class="content">
+            <h4 class="name">Brother HL-L2350DW</h4>
+            <p class="desc">لاسلكية، توفير في الحبر، أداء مستقر للمنازل والمكاتب.</p>
+            <p class="price">6,350 ج.م</p>
+            <div class="actions">
+              <button class="btn btn-gold add-to-cart" data-name="Brother HL-L2350DW" data-price="6350">أضف إلى السلة</button>
+              <a class="btn btn-outline" href="#policy">تفاصيل الشحن</a>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Inks -->
+      <h3 id="inks" class="small" style="margin-top:20px">الحبارات</h3>
+      <div class="grid" aria-label="قائمة الحبارات">
+        <!-- Ink 1 -->
+        <article class="card" data-cat="ink" data-name="HP 305 Black Cartridge" data-price="399" data-img="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1200&auto=format&fit=crop">
+          <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1200&auto=format&fit=crop" alt="حبر HP 305 أسود" loading="lazy" />
+            <span class="badge-cat">أصلي</span>
+          </div>
+          <div class="content">
+            <h4 class="name">HP 305 Black Cartridge</h4>
+            <p class="desc">حبر أسود أصلي لطباعة نصوص واضحة.</p>
+            <p class="price">399 ج.م</p>
+            <div class="actions">
+              <button class="btn btn-gold add-to-cart" data-name="HP 305 Black Cartridge" data-price="399">أضف إلى السلة</button>
+              <a class="btn btn-outline" href="#policy">تفاصيل الشحن</a>
+            </div>
+          </div>
+        </article>
+        <!-- Ink 2 -->
+        <article class="card" data-cat="ink" data-name="Canon CL-446 Color" data-price="499" data-img="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop">
+          <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop" alt="مجموعة حبر ملون" loading="lazy" />
+            <span class="badge-cat">ملون</span>
+          </div>
+          <div class="content">
+            <h4 class="name">Canon CL-446 Color</h4>
+            <p class="desc">حبر ملون عالي الجودة للصور والمستندات.</p>
+            <p class="price">499 ج.م</p>
+            <div class="actions">
+              <button class="btn btn-gold add-to-cart" data-name="Canon CL-446 Color" data-price="499">أضف إلى السلة</button>
+              <a class="btn btn-outline" href="#policy">تفاصيل الشحن</a>
+            </div>
+          </div>
+        </article>
+        <!-- Ink 3 -->
+        <article class="card" data-cat="ink" data-name="Ink Refill 100ml (Black)" data-price="120" data-img="https://images.unsplash.com/photo-1582719398250-1b9f8cfb92f3?q=80&w=1200&auto=format&fit=crop">
+          <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1582719398250-1b9f8cfb92f3?q=80&w=1200&auto=format&fit=crop" alt="حبر معاد تعبئته" loading="lazy" />
+            <span class="badge-cat">إعادة تعبئة</span>
+          </div>
+          <div class="content">
+            <h4 class="name">Ink Refill 100ml (Black)</h4>
+            <p class="desc">حبر اقتصادي معاد تعبئته لسعات طباعة كبيرة.</p>
+            <p class="price">120 ج.م</p>
+            <div class="actions">
+              <button class="btn btn-gold add-to-cart" data-name="Ink Refill 100ml (Black)" data-price="120">أضف إلى السلة</button>
+              <a class="btn btn-outline" href="#policy">تفاصيل الشحن</a>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Spare Parts -->
+      <h3 id="spare" class="small" style="margin-top:20px">قطع الغيار</h3>
+      <div class="grid" aria-label="قائمة قطع الغيار">
+        <!-- Spare 1 -->
+        <article class="card" data-cat="spare" data-name="Laser Drum Unit" data-price="850" data-img="https://images.unsplash.com/photo-1565626306381-3f8d5f54d20e?q=80&w=1200&auto=format&fit=crop">
+          <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1565626306381-3f8d5f54d20e?q=80&w=1200&auto=format&fit=crop" alt="درام طابعة ليزر" loading="lazy" />
+            <span class="badge-cat">درام</span>
+          </div>
+          <div class="content">
+            <h4 class="name">Laser Drum Unit</h4>
+            <p class="desc">درام بديل متوافق مع طابعات متعددة.</p>
+            <p class="price">850 ج.م</p>
+            <div class="actions">
+              <button class="btn btn-gold add-to-cart" data-name="Laser Drum Unit" data-price="850">أضف إلى السلة</button>
+              <a class="btn btn-outline" href="#policy">تفاصيل الشحن</a>
+            </div>
+          </div>
+        </article>
+        <!-- Spare 2 -->
+        <article class="card" data-cat="spare" data-name="USB 2.0 Printer Cable" data-price="90" data-img="https://images.unsplash.com/photo-1527430253228-e93688616381?q=80&w=1200&auto=format&fit=crop">
+          <div class="thumb">
+            <img src="https://images.unsplash.com/photo-1527430253228-e93688616381?q=80&w=1200&auto=format&fit=crop" alt="كابل USB طابعة" loading="lazy" />
+            <span class="badge-cat">كابل</span>
+          </div>
+          <div class="content">
+            <h4 class="name">USB 2.0 Printer Cable</h4>
+            <p class="desc">كابل عالي الجودة بطول 1.5 متر.</p>
+            <p class="price">90 ج.م</p>
+            <div class="actions">
+              <button class="btn btn-gold add-to-cart" data-name="USB 2.0 Printer Cable" data-price="90">أضف إلى السلة</button>
+              <a class="btn btn-outline" href="#policy">تفاصيل الشحن</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features / Selling Points -->
+  <section>
+    <div class="container features">
+      <div class="feature">
+        <h3>🚚 شحن لكل المحافظات</h3>
+        <p>100 ج.م (القاهرة والجيزة) — 140 ج.م لباقي المحافظات — +50 ج.م للشحن السريع.</p>
+      </div>
+      <div class="feature">
+        <h3>💬 دعم فني سريع</h3>
+        <p>استشارة مجانية لاختيار الطابعة والحبر المناسبين لاحتياجك.</p>
+      </div>
+      <div class="feature">
+        <h3>🛡️ جودة مضمونة</h3>
+        <p>منتجات أصلية ومجربة مع سياسات استبدال واضحة.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Policy -->
+  <section id="policy">
+    <div class="container">
+      <div class="section-head"><h2>سياسة الشحن والدفع</h2></div>
+      <div class="grid" style="grid-template-columns:1.3fr .7fr">
+        <div class="card" style="padding:16px">
+          <h3>الشحن</h3>
+          <ul>
+            <li>القاهرة والجيزة: <b>100 ج.م</b></li>
+            <li>باقي المحافظات: <b>140 ج.م</b></li>
+            <li>الشحن السريع: +<b>50 ج.م</b> على الشحن العادي</li>
+            <li>يتم التوصيل خلال 2 - 5 ايام</li>
+            <li>شحن مجاني للطلبات التي تتجاوز <b>2000 ج.م</b></li>
+          </ul>
+          <h3>الدفع</h3>
+          <ul>
+            <li>يتم تحويل 20% من قيمه الاوردر للتاكيد</li>
+            <li>عند الاستلام</li>
+            <li>فودافون كاش: <b>01003594374</b></li>
+            <li>إنستا باي: <b>01003594374</b></li>
+          </ul>
+        </div>
+        <div class="card" style="padding:16px">
+          <h3>وسائل التواصل</h3>
+          <p class="small">الطلبات والاستفسارات عبر واتساب على الرقم:</p>
+          <p style="font-size:1.3rem; font-weight:900; color:var(--gold)">0127 714 0099</p>
+          <a class="btn btn-gold" style="width:100%;" href="https://wa.me/201277140099?text=%D8%A7%D8%B2%D9%8A%D9%83%D9%88%D8%A7%20%D9%85%D8%AF%D9%8A%D9%86%D8%A9%20%D8%B3%D8%AA%D9%88%D8%B1%2C%20%D8%B9%D8%A7%D9%8A%D8%B2%20%D8%A7%D8%B7%D9%84%D8%A8%20%D9%85%D9%86%20%D8%B9%D9%86%D8%AF%D9%83%D9%85%20%F0%9F%93%A6" target="_blank" rel="noopener">راسلنا واتساب الآن</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="container">
+      <div class="section-head"><h2>من نحن</h2></div>
+      <div class="card" style="padding:18px">
+        <p>Madina Store — شركة متخصصة في بيع جميع أنواع الحبارات، الطابعات وقطع الغيار. نُقدم منتجات عالية الجودة بأسعار تنافسية مع شحن لجميع المحافظات وخدمة عملاء على مدار اليوم.</p>
+        <p class="small">نطمح لتجربة شراء سهلة وسريعة مع دعم فني محترف قبل وبعد البيع.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h4>Madina Store</h4>
+        <p class="small">كل ما تحتاجه للطباعة في مكان واحد — حبارات، برنترات، قطع غيار، دعم فني.</p>
+      </div>
+      <div class="footer-col">
+        <h4>روابط</h4>
+        <a href="#printers">البرنترات</a>
+        <a href="#inks">الحبارات</a>
+        <a href="#spare">قطع الغيار</a>
+      </div>
+      <div class="footer-col">
+        <h4>تواصل</h4>
+        <a href="https://wa.me/201277140099" target="_blank" rel="noopener">واتساب: 01277140099</a>
+        <a href="#policy">الشحن والدفع</a>
+      </div>
+    </div>
+    <div class="container" style="text-align:center; margin-top:14px">
+      <span class="small">© <span id="year"></span> Madina Store — جميع الحقوق محفوظة.</span>
+    </div>
+  </footer>
+
+  <!-- Cart modal -->
+  <div class="cart-modal" id="cart-modal" aria-hidden="true">
+    <div class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <h3 id="cart-title">سلة المشتريات</h3>
+        <button onclick="closeCart()" style="background:transparent;border:0;color:var(--muted);cursor:pointer;font-weight:800">إغلاق ✖</button>
+      </div>
+      <div class="cart-list" id="cart-list">
+        <!-- items injected here -->
+      </div>
+      <div class="cart-total" id="cart-total">المجموع: 0 ج.م</div>
+      <div class="cart-actions">
+        <button class="btn btn-outline" onclick="clearCart()">إفراغ السلة</button>
+        <button class="btn btn-gold" onclick="checkout()">اطلب عبر واتساب</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // tabs filtering
+    const tabs = document.querySelectorAll('.tab');
+    const cards = document.querySelectorAll('.card');
+    tabs.forEach(tab=>{
+      tab.addEventListener('click',()=>{
+        tabs.forEach(t=>t.classList.remove('active'));
+        tab.classList.add('active');
+        const f = tab.dataset.filter;
+        cards.forEach(c=>{
+          const cat = c.getAttribute('data-cat');
+          c.style.display = (f==='all' || f===cat) ? 'flex' : 'none';
+        })
+      })
+    });
+
+    // Cart logic
+    const cart = []; // {name, price, img}
+    const cartCountEl = document.getElementById('cart-count');
+    const cartListEl = document.getElementById('cart-list');
+    const cartTotalEl = document.getElementById('cart-total');
+    const cartModal = document.getElementById('cart-modal');
+
+    function updateCartUI(){
+      cartCountEl.textContent = cart.length;
+      // list
+      cartListEl.innerHTML = '';
+      let total = 0;
+      cart.forEach((it, idx)=>{
+        total += Number(it.price);
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <img src="${it.img}" alt="${it.name}">
+          <div class="meta">
+            <b>${it.name}</b>
+            <small style="color:var(--muted)">${it.price} ج.م</small>
+          </div>
+          <button class="remove" onclick="removeFromCart(${idx})">حذف</button>
+        `;
+        cartListEl.appendChild(div);
+      });
+      cartTotalEl.textContent = 'المجموع: ' + total + ' ج.م';
+    }
+
+    function addToCartBtn(e){
+      const btn = e.currentTarget;
+      const name = btn.dataset.name;
+      const price = btn.dataset.price;
+      // try to get an image from parent article data-img or thumb img
+      let img = '';
+      const article = btn.closest('.card');
+      if(article){
+        img = article.getAttribute('data-img') || (article.querySelector('.thumb img') ? article.querySelector('.thumb img').src : '');
+      }
+      cart.push({name, price, img});
+      updateCartUI();
+    }
+
+    document.querySelectorAll('.add-to-cart').forEach(b=>{
+      b.addEventListener('click', addToCartBtn);
+    });
+
+    function removeFromCart(idx){
+      cart.splice(idx,1);
+      updateCartUI();
+    }
+
+    function clearCart(){
+      cart.length = 0;
+      updateCartUI();
+    }
+
+    // open/close cart
+    document.getElementById('open-cart').addEventListener('click', ()=>{
+      cartModal.classList.add('open');
+      cartModal.setAttribute('aria-hidden','false');
+      updateCartUI();
+    });
+    function closeCart(){
+      cartModal.classList.remove('open');
+      cartModal.setAttribute('aria-hidden','true');
+    }
+
+    // checkout -> prepare whatsapp message
+    function checkout(){
+      if(cart.length === 0){
+        alert('سلة المشتريات فارغة.');
+        return;
+      }
+      let total = 0;
+      let itemsText = '';
+      cart.forEach((it, idx)=>{
+        itemsText += `${idx+1}. ${it.name} - ${it.price} ج.م\n`;
+        total += Number(it.price);
+      });
+      const msg = `اهلاً Madina Store 👋\nعايز أطلب من السلة:\n${itemsText}\nالمجموع: ${total} ج.م\n\nالاسم: \nالمحافظة: \nالعنوان: \nطريقة الدفع (عند الاستلام / فودافون كاش / إنستا باي):`;
+      const WHATSAPP_NUMBER = '201277140099';
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+      window.open(url,'_blank');
+    }
+
+    // close modal when clicking outside panel
+    cartModal.addEventListener('click', (e)=>{
+      if(e.target === cartModal) closeCart();
+    });
+
+    // accessibility: close with Escape
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape') closeCart();
+    });
+  </script>
+</body>
+</html>
